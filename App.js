@@ -2,26 +2,26 @@ import React, { useState } from 'react';
 import { View, Text, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function App() {
-  const [userChoice, setUserChoice] = useState(null);
-  const [appChoice, setAppChoice] = useState(null);
-  const [result, setResult] = useState('');
+  const [usuarioEscolha, descolhaUser] = useState(null);
+  const [appEscolha, descolhaIA] = useState(null);
+  const [resultado, dResultado] = useState('');
 
   const choices = ['Pedra', 'Papel', 'Tesoura'];
   
-  // Função para realizar a jogada do app
-  const getAppChoice = () => {
+  // funçao para realizar a jogada
+  const jogadaIA = () => {
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
   };
 
-  // Função para calcular o vencedor
-  const calculateResult = (user, app) => {
-    if (user === app) {
+  // calcular o vencedor
+  const calculaResultado = (usuario, app) => {
+    if (usuario === app) {
       return 'Empate!';
     } else if (
-      (user === 'Pedra' && app === 'Tesoura') ||
-      (user === 'Tesoura' && app === 'Papel') ||
-      (user === 'Papel' && app === 'Pedra')
+      (usuario === 'Pedra' && app === 'Tesoura') ||
+      (usuario === 'Tesoura' && app === 'Papel') ||
+      (usuario === 'Papel' && app === 'Pedra')
     ) {
       return 'Você ganhou!';
     } else {
@@ -30,19 +30,19 @@ export default function App() {
   };
 
   // Função para lidar com a escolha do usuário
-  const onPressChoice = (choice) => {
-    const appMove = getAppChoice();
-    setUserChoice(choice);
-    setAppChoice(appMove);
-    const gameResult = calculateResult(choice, appMove);
-    setResult(gameResult);
+  const onPressChoice = (escolha) => {
+    const jogadaIA2 = jogadaIA();
+    descolhaUser(escolha);
+    descolhaIA(jogadaIA2);
+    const resultadoJogo = calculaResultado(escolha, jogadaIA2);
+    dResultado(resultadoJogo);
   };
 
-  // Função para reiniciar o jogo
-  const resetGame = () => {
-    setUserChoice(null);
-    setAppChoice(null);
-    setResult('');
+  // reiniciar o jogo
+  const resetarGame = () => {
+    descolhaUser(null);
+    descolhaIA(null);
+    dResultado('');
   };
 
   return (
@@ -51,26 +51,26 @@ export default function App() {
 
       <View style={styles.choicesContainer}>
         <TouchableOpacity onPress={() => onPressChoice('Pedra')}>
-          <Image source={require('./assets/pedra.png')} style={styles.choiceImage} />
+          <Image source={require('./assets/pedra.png')} style={styles.escolhaImagem} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onPressChoice('Papel')}>
-          <Image source={require('./assets/papel.png')} style={styles.choiceImage} />
+          <Image source={require('./assets/papel.png')} style={styles.escolhaImagem} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onPressChoice('Tesoura')}>
-          <Image source={require('./assets/tesoura.png')} style={styles.choiceImage} />
+          <Image source={require('./assets/tesoura.png')} style={styles.escolhaImagem} />
         </TouchableOpacity>
       </View>
 
-      {userChoice && appChoice && (
+      {usuarioEscolha && appEscolha && (
         <View style={styles.resultContainer}>
-          <Text style={styles.resultText}>Você escolheu: {userChoice}</Text>
-          <Text style={styles.resultText}>O app escolheu: {appChoice}</Text>
-          <Text style={styles.resultText}>{result}</Text>
+          <Text style={styles.resultadoTexto}>Você escolheu: {usuarioEscolha}</Text>
+          <Text style={styles.resultadoTexto}>O app escolheu: {appEscolha}</Text>
+          <Text style={styles.resultadoTexto}>{resultado}</Text>
         </View>
       )}
 
-      <View style={styles.buttonContainer}>
-        <Button title="Jogar Novamente" onPress={resetGame} />
+      <View style={styles.botao}>
+        <Button title="Jogar Novamente" onPress={resetarGame} />
       </View>
     </View>
   );
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 30,
   },
-  choiceImage: {
+  escolhaImagem: {
     width: 100,
     height: 100,
   },
@@ -103,12 +103,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: 'center',
   },
-  resultText: {
+  resultadoTexto: {
     fontSize: 20,
     fontWeight: 'bold',
     marginVertical: 10,
   },
-  buttonContainer: {
+  botao: {
     marginTop: 30,
   },
 });
